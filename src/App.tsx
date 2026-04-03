@@ -6,7 +6,7 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
     setError("")
@@ -58,7 +58,7 @@ function App() {
 
             <input
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
               placeholder="Name"
               className="w-full mb-4 px-3 py-2 bg-[#1a1a1a] text-gray-300 rounded outline-none focus:ring-1 focus:ring-teal-400"
             />
@@ -66,7 +66,7 @@ function App() {
             <input
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
               placeholder="Password"
               className="w-full mb-4 px-3 py-2 bg-[#1a1a1a] text-gray-300 rounded outline-none focus:ring-1 focus:ring-teal-400"
             />

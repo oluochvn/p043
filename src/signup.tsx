@@ -1,17 +1,17 @@
 import { useState } from "react"
 
 function Signup() {
-  const [name, setname] = useState("")
+  const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
 
-  const handleSignup = async (e) => {
+  const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
-    setError("") 
+    setError("")
     setSuccess("")
 
     try {
@@ -21,7 +21,7 @@ function Signup() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          name,
+          username,
           email,
           password
         })
@@ -33,7 +33,7 @@ function Signup() {
         setError(data)
       } else {
         setSuccess(data)
-        setname("")
+        setUsername("")
         setEmail("")
         setPassword("")
       }
@@ -68,15 +68,15 @@ function Signup() {
             )}
 
             <input
-              value={name}
-              onChange={(e) => setname(e.target.value)}
-              placeholder="Name"
+              value={username}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+              placeholder="Username"
               className="w-full mb-3 px-3 py-2 bg-[#1a1a1a] text-gray-300 rounded outline-none focus:ring-1 focus:ring-teal-400"
             />
 
             <input
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
               placeholder="Email"
               className="w-full mb-3 px-3 py-2 bg-[#1a1a1a] text-gray-300 rounded outline-none focus:ring-1 focus:ring-teal-400"
             />
@@ -84,7 +84,7 @@ function Signup() {
             <input
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
               placeholder="Password"
               className="w-full mb-4 px-3 py-2 bg-[#1a1a1a] text-gray-300 rounded outline-none focus:ring-1 focus:ring-teal-400"
             />
@@ -99,7 +99,7 @@ function Signup() {
 
             <div className="flex items-center mt-4 gap-2">
               <span className="text-gray-500 text-sm">Already have one?</span>
-              <a href="login" className="text-teal-400 text-sm hover:underline">
+              <a href="/" className="text-teal-400 text-sm hover:underline">
                 Login
               </a>
             </div>

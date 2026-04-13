@@ -1,12 +1,20 @@
 import { useState } from "react"
 
 function Signup() {
-  const [username, setUsername] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    password: ""
+  })
+
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setForm((prev) => ({ ...prev, [name]: value }))
+  }
 
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -15,30 +23,32 @@ function Signup() {
     setSuccess("")
 
     try {
-      const res = await fetch("http://localhost:3000/register", {
+      const res = await fetch("https://contactbck.onrender.com/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          username,
-          email,
-          password
+          username: form.username.trim(),
+          email: form.email.trim(),
+          password: form.password.trim()
         })
       })
 
       const data = await res.text()
 
       if (!res.ok) {
-        setError(data)
+        setError(data || "Something went wrong")
       } else {
-        setSuccess(data)
-        setUsername("")
-        setEmail("")
-        setPassword("")
+        setSuccess(data || "Account created successfully")
+        setForm({ username: "", email: "", password: "" })
       }
     } catch (err) {
-      setError("Server error")
+      if (err instanceof Error) {
+        setError(err.message)
+      } else {
+        setError("Server error")
+      }
     }
 
     setLoading(false)
@@ -50,6 +60,7 @@ function Signup() {
 
         <img
           src="/vnn.png"
+          alt="illustration"
           className="absolute left-0 bottom-0 w-[55%] object-contain opacity-90"
         />
 
@@ -68,24 +79,35 @@ function Signup() {
             )}
 
             <input
-              value={username}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+              name="username"
+              type="text"
+              required
+              value={form.username}
+              onChange={handleChange}
               placeholder="Username"
+              disabled={loading}
               className="w-full mb-3 px-3 py-2 bg-[#1a1a1a] text-gray-300 rounded outline-none focus:ring-1 focus:ring-teal-400"
             />
 
             <input
-              value={email}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+              name="email"
+              type="email"
+              required
+              value={form.email}
+              onChange={handleChange}
               placeholder="Email"
+              disabled={loading}
               className="w-full mb-3 px-3 py-2 bg-[#1a1a1a] text-gray-300 rounded outline-none focus:ring-1 focus:ring-teal-400"
             />
 
             <input
+              name="password"
               type="password"
-              value={password}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+              required
+              value={form.password}
+              onChange={handleChange}
               placeholder="Password"
+              disabled={loading}
               className="w-full mb-4 px-3 py-2 bg-[#1a1a1a] text-gray-300 rounded outline-none focus:ring-1 focus:ring-teal-400"
             />
 
@@ -99,7 +121,7 @@ function Signup() {
 
             <div className="flex items-center mt-4 gap-2">
               <span className="text-gray-500 text-sm">Already have one?</span>
-              <a href="/" className="text-teal-400 text-sm hover:underline">
+              <a href="/login" className="text-teal-400 text-sm hover:underline">
                 Login
               </a>
             </div>
